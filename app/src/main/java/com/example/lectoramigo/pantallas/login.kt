@@ -26,10 +26,12 @@ import com.example.lectoramigo.R
 @Composable
 fun login(
     onIrARegistro: () -> Unit = {},
-    onIrARecuperar: () -> Unit = {}
+    onIrARecuperar: () -> Unit = {},
+    onLoginExitoso: (String) -> Unit = {}
 ) {
     var usuario by remember { mutableStateOf("") }
     var contrasena by remember { mutableStateOf("") }
+    var mensaje by remember { mutableStateOf("") }
 
     Box(
         modifier = Modifier
@@ -104,7 +106,21 @@ fun login(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Button(
-                    onClick = { /* TODO: validar */ },
+                    onClick = {
+                        val ok = usuariosSimulados.any { it.nombre == usuario && it.contrasena == contrasena }
+                        when {
+                            usuario.isBlank() || contrasena.isBlank() -> {
+                                mensaje = "❌ Debes completar usuario y contraseña"
+                            }
+                            ok -> {
+                                mensaje = "✅ Ingreso exitoso"
+                                onLoginExitoso(usuario)
+                            }
+                            else -> {
+                                mensaje = "❌ Usuario o contraseña incorrectos"
+                            }
+                        }
+                    },
                     colors = ButtonDefaults.buttonColors(containerColor = RosaClaro),
                     modifier = Modifier.fillMaxWidth()
                 ) {
