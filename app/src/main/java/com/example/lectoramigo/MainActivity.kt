@@ -13,6 +13,7 @@ import com.example.lectoramigo.pantallas.registro
 
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.lectoramigo.pantallas.home
 import com.example.lectoramigo.pantallas.recuperarcontrasena
 
 
@@ -31,6 +32,7 @@ sealed class Ruta(val route: String) {
     data object Login: Ruta("login")
     data object Registro: Ruta("registro")
     data object RecuperarContrasena: Ruta("recuperarcontrasena")
+    data object Home: Ruta("home")
 }
 
 @Composable
@@ -56,6 +58,12 @@ fun AppNav() {
                 onVolver = { nav.popBackStack() }
             )
             }
+        composable (Ruta.Home.route) {
+            home(
+                usuario = "Usuario",
+                onLogout = { nav.popBackStack(Ruta.Login.route, inclusive = false) }
+            )
+        }
 
     }
 }
