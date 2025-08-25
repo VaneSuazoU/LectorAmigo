@@ -43,7 +43,8 @@ fun AppNav() {
         composable(Ruta.Login.route) {
             login(
                 onIrARegistro = { nav.navigate(Ruta.Registro.route) },
-                onIrARecuperar = { nav.navigate(Ruta.RecuperarContrasena.route) }
+                onIrARecuperar = { nav.navigate(Ruta.RecuperarContrasena.route) },
+                onLoginExitoso = { usuario -> nav.navigate("${Ruta.Home.route}/$usuario") }
             )
         }
         composable(Ruta.Registro.route) {
@@ -58,12 +59,12 @@ fun AppNav() {
                 onVolver = { nav.popBackStack() }
             )
             }
-        composable (Ruta.Home.route) {
+        composable("${Ruta.Home.route}/{usuario}") { backStackEntry ->
+            val usuario = backStackEntry.arguments?.getString("usuario") ?: "Usuario"
             home(
-                usuario = "Usuario",
+                usuario = usuario,
                 onLogout = { nav.popBackStack(Ruta.Login.route, inclusive = false) }
             )
         }
-
     }
 }
